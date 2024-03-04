@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:quiz_app/start_button.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -31,7 +32,7 @@ class StartPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height:20),
-          ElevatedButton(onPressed: start_quiz, child: const Text("Start Quiz"))
+          StartButton(),
         ],
       ),
     ));
