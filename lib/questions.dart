@@ -11,10 +11,8 @@ class Questions extends StatefulWidget {
 class _QuestionsList extends State<Questions> {
   var index = 0;
   QuestionsBlueprint question = questions[0];
-  void incrementIndex() {
-    
-  }
-  void answerClicked() {
+  void answerClicked(buttonText) {
+    print(buttonText);
     if(index != questions.length-1)
     {
     setState(() {
@@ -30,6 +28,7 @@ class _QuestionsList extends State<Questions> {
       print("Index out of range");
     }
   }
+  @override
   Widget build(context) {
     return Container(
       decoration: const BoxDecoration(
@@ -41,17 +40,17 @@ class _QuestionsList extends State<Questions> {
         child: Column(
           children: [
             Text(question.question),
-            ...question.answersList.map((answer) {
+            ...question.shuffleElements().map((answer) {
               return TextButton(
-                onPressed: answerClicked,
-                child: Text(answer),
+                onPressed: () => answerClicked(answer),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.purpleAccent,
                   foregroundColor: Colors.white,
                 ),
+                child: Text(answer),
                 );
             }).toList(),
-            const SizedBox(height:80),
+            
           ],
         ),
       ),

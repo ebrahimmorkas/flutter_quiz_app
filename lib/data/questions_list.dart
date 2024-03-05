@@ -1,3 +1,5 @@
+// File that contains the question and answers but in the form of object of QuestionsBluetprint class
+
 import "package:quiz_app/questions_blueprint/questions_blueprint.dart";
 
 const questions = [
