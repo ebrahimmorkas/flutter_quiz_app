@@ -16,13 +16,14 @@ class _DisplayResultsPage extends State<ResultsPage> {
   Widget build(context) {
     // Creating the list in which we will store the question and the answer given by user and all this will be in form of Map
     final List<Map<String, Object>> summary = [];
-    for (var i = 0; i <= widget.results.length; i++) {
+    for (var i = 0; i < widget.results.length; i++) {
       summary.add({
         "question": questions[i].question,
         "correctAnswer": questions[i].answersList,
         "userAnswer": widget.results[i]
       });
     }
+    var summaryLength = summary.length;
 
     return Container(
         height: 100,
@@ -37,9 +38,20 @@ class _DisplayResultsPage extends State<ResultsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: [
-                    Text(widget.results[0]),
+                     ...summary.map((data) {
+  String question = data['question'].toString();
+  String correctAnswer = data['correctAnswer'].toString();
+  return Column(
+    children: [
+      Text(question),
+      Text(correctAnswer),
+    ],
+  );
+  // return Text("Question: $question, Correct Answer: $correctAnswer");
+}).toList(),
                   ],
                 ),
               )
