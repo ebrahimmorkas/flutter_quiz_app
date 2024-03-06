@@ -19,11 +19,32 @@ class _DisplayResultsPage extends State<ResultsPage> {
     for (var i = 0; i < widget.results.length; i++) {
       summary.add({
         "question": questions[i].question,
-        "correctAnswer": questions[i].answersList,
+        "correctAnswer": questions[i].answersList[0],
         "userAnswer": widget.results[i]
       });
     }
-    var summaryLength = summary.length;
+
+    List correctAnswers = summary.where((element) => element['correctAnswer'] == element['userAnswer']).toList();
+
+    // Creating the variables that will contain the total number of right answers given by user and total questions
+    var totalNumberOfCorrectAnswer = correctAnswers.length;
+    var totalNumberOfQuestions = summary.length;
+
+    Text styleTextWidget(text) {
+      var textColor = Colors.white54;
+      if (correctAnswers.contains(text))
+      {
+        textColor = Colors.white70;
+      }
+      return Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white54,
+          fontSize: 35,
+          fontFamily: AutofillHints.creditCardNumber,
+        )
+      );
+    }
 
     return Container(
         height: 100,
@@ -37,26 +58,42 @@ class _DisplayResultsPage extends State<ResultsPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                     ...summary.map((data) {
-  String question = data['question'].toString();
-  String correctAnswer = data['correctAnswer'].toString();
-  return Column(
-    children: [
-      Text(question),
-      Text(correctAnswer),
-    ],
-  );
-  // return Text("Question: $question, Correct Answer: $correctAnswer");
-}).toList(),
-                  ],
-                ),
-              )
+              Container(
+                  constraints: const BoxConstraints(maxHeight: 200),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text(
+                          'You got $totalNumberOfCorrectAnswer right answers out of $totalNumberOfQuestions questions',
+                          style: const TextStyle(
+                            fontFamily: AutofillHints.fullStreetAddress,
+                            fontSize: 35,
+                            color: Colors.white38,
+                          ),
+                          ),
+                        const SizedBox(height: 30),
+                        ...summary.map((data) {
+                          String question = data['question'].toString();
+                          String correctAnswer =
+                              data['correctAnswer'].toString();
+                              String userAnswer = data['userAnswer'].toString();
+                          return Column(
+                            children: [
+                              styleTextWidget(question),
+                              styleTextWidget(correctAnswer),
+                              styleTextWidget(userAnswer),
+                              const SizedBox(height: 80),
+                            ],
+                          );
+                          // return Text("Question: $question, Correct Answer: $correctAnswer");
+                        }).toList(),
+                      ],
+                    ),
+                  )
+                  ),
             ],
           ),
-        ));
+        )
+        );
   }
 }
